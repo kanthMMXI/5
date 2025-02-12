@@ -3,7 +3,7 @@ async function translateText() {
     const targetLanguage = document.getElementById('languageSelect').value;
 
     if (text) {
-        const url = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyD4HjBVAbKAWC5wf98ay1b6iveuolmmDCc`;  // Correct API URL
+        const url = `https://translation.googleapis.com/language/translate/v2?key=AIzaSyD4HjBVAbKAWC5wf98ay1b6iveuolmmDCc`;
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -14,8 +14,15 @@ async function translateText() {
                 target: targetLanguage
             })
         });
+
         const data = await response.json();
-        document.getElementById('outputText').textContent = data.data.translations[0].translatedText;
+        console.log('API Response:', data);  // Check the response data
+
+        if (data.data && data.data.translations) {
+            document.getElementById('outputText').textContent = data.data.translations[0].translatedText;
+        } else {
+            console.error('Translation error:', data.error);
+        }
     } else {
         document.getElementById('outputText').textContent = "Please enter some text!";
     }
